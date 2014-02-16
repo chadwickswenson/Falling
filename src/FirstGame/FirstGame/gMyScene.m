@@ -12,7 +12,7 @@ static const uint32_t shipCategory =  0x1 << 0;
 static const uint32_t obstacleCategory =  0x1 << 1;
 
 static const float BG_VELOCITY = 100.0; //Velocity with which our background is going to move
-static const float BLOCK_HEIGHT = 20.0;
+static const float BLOCK_HEIGHT = 15.0;
 static const float SIDE_SPEED = 4.0;
 
 static inline CGPoint CGPointAdd(const CGPoint a, const CGPoint b)
@@ -69,8 +69,8 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
     score = 0;
     leftBricksNum = 0;
     rightBricksNum = 0;
-    whiteSpace = numBrickNeeded/(3);
-    whiteSpaceMin = whiteSpace - (numBrickNeeded / 10);
+    whiteSpace = numBrickNeeded/(2);
+    whiteSpaceMin = whiteSpace - (numBrickNeeded / 6);
     whiteSpaceMax = whiteSpace + (numBrickNeeded / 10);
     whiteSpaceOffset = numBrickNeeded/(3);
     whiteSpaceOffsetMin = 0;
@@ -215,7 +215,7 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
     
     //change the whitespace left offset by a random amount within limits
     if (whiteSpaceOffset > whiteSpaceOffsetMin && whiteSpaceOffset < whiteSpaceOffsetMax) {
-        whiteSpaceOffset += arc4random()%3 - 1;
+        whiteSpaceOffset += arc4random()%5 - 2;
     } else if (whiteSpaceOffset >= whiteSpaceOffsetMax)
     {
         whiteSpaceOffset -= arc4random()%2;
@@ -228,41 +228,40 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
     }
     
         
-    NSInteger bricksLeft = whiteSpaceOffset;
-    NSInteger bricksRight = numBrickNeeded - (whiteSpaceOffset + whiteSpace);
-
-    for (int i = 0; i < bricksLeft; i++) {
-        SKSpriteNode * brick = [SKSpriteNode new];
-        brick = [SKSpriteNode spriteNodeWithColor:[SKColor redColor] size:CGSizeMake(BLOCK_HEIGHT,BLOCK_HEIGHT)];
-        brick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(BLOCK_HEIGHT,BLOCK_HEIGHT)];
-        [self addChild:brick];
-        brick.physicsBody.categoryBitMask = obstacleCategory;
-        brick.physicsBody.dynamic = NO;
-        //brick.physicsBody.static = NO;
-        brick.physicsBody.contactTestBitMask = obstacleCategory;
-        brick.physicsBody.collisionBitMask = 0;
-        brick.name = @"brick";
-        brick.position = CGPointMake(BLOCK_HEIGHT*i,-BLOCK_HEIGHT);
-        brick.zPosition = 3;
-        //brick.physicsBody.usesPreciseCollisionDetection = YES;
-        
+    NSInteger leftBrickWidth = whiteSpaceOffset*BLOCK_HEIGHT;
+    NSInteger rightBrickWidth = (numBrickNeeded - (whiteSpaceOffset + whiteSpace))*BLOCK_HEIGHT;
+    if (leftBrickWidth < 0) {
+        leftBrickWidth = 0;
     }
+    if (rightBrickWidth < 0) {
+        rightBrickWidth =0;
+    }
+    SKSpriteNode * brick = [SKSpriteNode new];
+    brick = [SKSpriteNode spriteNodeWithColor:[SKColor redColor] size:CGSizeMake(leftBrickWidth,BLOCK_HEIGHT)];
+    brick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(leftBrickWidth,BLOCK_HEIGHT)];
+    [self addChild:brick];
+    brick.physicsBody.categoryBitMask = obstacleCategory;
+    brick.physicsBody.dynamic = NO;
+    //brick.physicsBody.static = NO;
+    brick.physicsBody.contactTestBitMask = obstacleCategory;
+    brick.physicsBody.collisionBitMask = 0;
+    brick.name = @"brick";
+    brick.position = CGPointMake(leftBrickWidth/2,-BLOCK_HEIGHT);
+    brick.zPosition = 3;
+    //brick.physicsBody.usesPreciseCollisionDetection = YES;
     
-    for (int i = 0; i < bricksRight; i++) {
-        SKSpriteNode * brick = [SKSpriteNode new];
-        brick = [SKSpriteNode spriteNodeWithColor:[SKColor redColor] size:CGSizeMake(BLOCK_HEIGHT,BLOCK_HEIGHT)];
-        brick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(BLOCK_HEIGHT,BLOCK_HEIGHT)];
-        [self addChild:brick];
-        brick.physicsBody.categoryBitMask = obstacleCategory;
-        brick.physicsBody.dynamic = NO;
-        brick.physicsBody.contactTestBitMask = obstacleCategory;
-        brick.physicsBody.collisionBitMask = 0;
-        brick.name = @"brick";
-        brick.position = CGPointMake(screenWidth - BLOCK_HEIGHT*i,-BLOCK_HEIGHT);
-        brick.zPosition = 3;
-        //brick.physicsBody.usesPreciseCollisionDetection = YES;
-        
-    }
+    SKSpriteNode * rightBrick = [SKSpriteNode new];
+    rightBrick = [SKSpriteNode spriteNodeWithColor:[SKColor redColor] size:CGSizeMake(rightBrickWidth,BLOCK_HEIGHT)];
+    rightBrick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(rightBrickWidth,BLOCK_HEIGHT)];
+    [self addChild:rightBrick];
+    rightBrick.physicsBody.categoryBitMask = obstacleCategory;
+    rightBrick.physicsBody.dynamic = NO;
+    rightBrick.physicsBody.contactTestBitMask = obstacleCategory;
+    rightBrick.physicsBody.collisionBitMask = 0;
+    rightBrick.name = @"brick";
+    rightBrick.position = CGPointMake(screenWidth - rightBrickWidth/2,-BLOCK_HEIGHT);
+    rightBrick.zPosition = 3;
+    //brick.physicsBody.usesPreciseCollisionDetection = YES;
     
 }
 
