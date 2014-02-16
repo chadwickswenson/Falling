@@ -12,7 +12,7 @@ static const uint32_t shipCategory =  0x1 << 0;
 static const uint32_t obstacleCategory =  0x1 << 1;
 
 static const float BG_VELOCITY = 100.0; //Velocity with which our background is going to move
-static const float BLOCK_HEIGHT = 30.0;
+static const float BLOCK_HEIGHT = 20.0;
 static const float SIDE_SPEED = 4.0;
 
 static inline CGPoint CGPointAdd(const CGPoint a, const CGPoint b)
@@ -38,6 +38,13 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
     SKLabelNode *labelScore;
     NSInteger leftBricksNum;
     NSInteger rightBricksNum;
+    NSInteger whiteSpace;
+    NSInteger whiteSpaceMin;
+    NSInteger whiteSpaceMax;
+    NSInteger whiteSpaceOffset;
+    NSInteger whiteSpaceOffsetMin;
+    NSInteger whiteSpaceOffsetMax;
+    NSInteger numBrickNeeded;
 }
 
 -(id)initWithSize:(CGSize)size {
@@ -46,7 +53,6 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
         brickMoved = 0;
         self.backgroundColor = [UIColor colorWithRed:160 green:97 blue:5 alpha:1];
         //[self initalizingScrollingBackground];
-        [self addBrickRow];
         [self addShip];
         //Making self delegate of physics World
         self.physicsWorld.gravity = CGVectorMake(0,0);
@@ -58,17 +64,25 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
     
     screenWidth = screenSize.width;
     screenHeight = screenSize.height;
-    
+    numBrickNeeded = screenWidth/BLOCK_HEIGHT;
     numBricks = 8;
     score = 0;
     leftBricksNum = 0;
     rightBricksNum = 0;
+    whiteSpace = numBrickNeeded/(3);
+    whiteSpaceMin = whiteSpace - (numBrickNeeded / 10);
+    whiteSpaceMax = whiteSpace + (numBrickNeeded / 10);
+    whiteSpaceOffset = numBrickNeeded/(3);
+    whiteSpaceOffsetMin = 0;
+    whiteSpaceOffsetMax = numBrickNeeded - whiteSpaceMax;
     labelScore = [SKLabelNode labelNodeWithFontNamed:@"Chalkduster"];
     labelScore.text = @"score";
     labelScore.zPosition = 10;
     labelScore.fontSize = 40;
     labelScore.fontColor = [SKColor blackColor];
     labelScore.position = CGPointMake(self.size.width/2, 30);
+    
+    [self addBrickRow];
     [self addChild:labelScore];
     
     self.motionManager = [[CMMotionManager alloc] init];
@@ -177,7 +191,7 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
          
          b.position = CGPointAdd(amtToMove, b.position);
          
-         if(b.position.y > screenHeight){
+         if(b.position.y > screenHeight+10){
              [b removeFromParent];
          }
      }];
@@ -185,52 +199,69 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
 }
 
 - (void)addBrickRow{
-    
-    NSInteger numBrickNeeded = screenWidth/BLOCK_HEIGHT;
-    NSInteger leftOrRight = arc4random()%2;
-    NSInteger add = arc4random()%4;
-    //NSLog(@"%d",leftOrRight);
-    NSInteger bricks = 3;
-    NSInteger bricksMid = 3;
-    
-    if(leftOrRight == 0){
-        bricks -= add;
-        bricksMid += add;
-    }
-    else{
-        bricks += add;
-        bricksMid -= add;
+    //take the current whitespace ammount and modify it by random amount within limits
+    if (whiteSpace > whiteSpaceMin && whiteSpace < whiteSpaceMax) {
+        whiteSpace += arc4random()%5 - 2;
+    } else if (whiteSpace >= whiteSpaceMax)
+    {
+        whiteSpace -= arc4random()%2;
+    } else if (whiteSpace <= whiteSpaceMin)
+    {
+        whiteSpace += arc4random()%2;
+    } else
+    {
+        NSLog(@"Whitespace error");
     }
     
-    //NSLog(@"%i",bricksLeft);
-    for (int i = 0; i < bricks; i++) {
+    //change the whitespace left offset by a random amount within limits
+    if (whiteSpaceOffset > whiteSpaceOffsetMin && whiteSpaceOffset < whiteSpaceOffsetMax) {
+        whiteSpaceOffset += arc4random()%3 - 1;
+    } else if (whiteSpaceOffset >= whiteSpaceOffsetMax)
+    {
+        whiteSpaceOffset -= arc4random()%2;
+    }
+    else if (whiteSpaceOffset <= whiteSpaceOffsetMin){
+        whiteSpaceOffset += arc4random()%2;
+    }
+    else {
+        NSLog(@"White space offset error");
+    }
+    
+        
+    NSInteger bricksLeft = whiteSpaceOffset;
+    NSInteger bricksRight = numBrickNeeded - (whiteSpaceOffset + whiteSpace);
+
+    for (int i = 0; i < bricksLeft; i++) {
         SKSpriteNode * brick = [SKSpriteNode new];
         brick = [SKSpriteNode spriteNodeWithColor:[SKColor redColor] size:CGSizeMake(BLOCK_HEIGHT,BLOCK_HEIGHT)];
-        brick.physicsBody.categoryBitMask = shipCategory;
-        brick.physicsBody.dynamic = YES;
+        brick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(BLOCK_HEIGHT,BLOCK_HEIGHT)];
+        [self addChild:brick];
+        brick.physicsBody.categoryBitMask = obstacleCategory;
+        brick.physicsBody.dynamic = NO;
+        //brick.physicsBody.static = NO;
         brick.physicsBody.contactTestBitMask = obstacleCategory;
         brick.physicsBody.collisionBitMask = 0;
         brick.name = @"brick";
         brick.position = CGPointMake(BLOCK_HEIGHT*i,-BLOCK_HEIGHT);
         brick.zPosition = 3;
-        brick.physicsBody.usesPreciseCollisionDetection = YES;
-        brick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(BLOCK_HEIGHT,BLOCK_HEIGHT)];
-        [self addChild:brick];
+        //brick.physicsBody.usesPreciseCollisionDetection = YES;
+        
     }
     
-    for (int i = 0; i < bricksMid; i++) {
+    for (int i = 0; i < bricksRight; i++) {
         SKSpriteNode * brick = [SKSpriteNode new];
         brick = [SKSpriteNode spriteNodeWithColor:[SKColor redColor] size:CGSizeMake(BLOCK_HEIGHT,BLOCK_HEIGHT)];
-        brick.physicsBody.categoryBitMask = shipCategory;
-        brick.physicsBody.dynamic = YES;
+        brick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(BLOCK_HEIGHT,BLOCK_HEIGHT)];
+        [self addChild:brick];
+        brick.physicsBody.categoryBitMask = obstacleCategory;
+        brick.physicsBody.dynamic = NO;
         brick.physicsBody.contactTestBitMask = obstacleCategory;
         brick.physicsBody.collisionBitMask = 0;
         brick.name = @"brick";
         brick.position = CGPointMake(screenWidth - BLOCK_HEIGHT*i,-BLOCK_HEIGHT);
         brick.zPosition = 3;
-        brick.physicsBody.usesPreciseCollisionDetection = YES;
-        brick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(BLOCK_HEIGHT,BLOCK_HEIGHT)];
-        [self addChild:brick];
+        //brick.physicsBody.usesPreciseCollisionDetection = YES;
+        
     }
     
 }
@@ -250,7 +281,7 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
         _dt = 0;
     }
     
-    if(brickMoved >= BLOCK_HEIGHT-2){
+    if(brickMoved >= BLOCK_HEIGHT-5){
         brickMoved = 0;
         [self addBrickRow];
         score++;
