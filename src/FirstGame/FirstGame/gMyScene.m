@@ -230,14 +230,13 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
         
     NSInteger leftBrickWidth = whiteSpaceOffset*BLOCK_HEIGHT;
     NSInteger rightBrickWidth = (numBrickNeeded - (whiteSpaceOffset + whiteSpace))*BLOCK_HEIGHT;
-    if (leftBrickWidth < 0) {
-        leftBrickWidth = 0;
+    if (leftBrickWidth < BLOCK_HEIGHT) {
+        leftBrickWidth = BLOCK_HEIGHT;
     }
-    if (rightBrickWidth < 0) {
-        rightBrickWidth =0;
+    if (rightBrickWidth < BLOCK_HEIGHT) {
+        rightBrickWidth = BLOCK_HEIGHT;
     }
-    SKSpriteNode * brick = [SKSpriteNode new];
-    brick = [SKSpriteNode spriteNodeWithColor:[SKColor redColor] size:CGSizeMake(leftBrickWidth,BLOCK_HEIGHT)];
+    SKSpriteNode * brick = [SKSpriteNode spriteNodeWithColor:[SKColor redColor] size:CGSizeMake(leftBrickWidth,BLOCK_HEIGHT)];
     brick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(leftBrickWidth,BLOCK_HEIGHT)];
     [self addChild:brick];
     brick.physicsBody.categoryBitMask = obstacleCategory;
@@ -250,8 +249,7 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
     brick.zPosition = 3;
     //brick.physicsBody.usesPreciseCollisionDetection = YES;
     
-    SKSpriteNode * rightBrick = [SKSpriteNode new];
-    rightBrick = [SKSpriteNode spriteNodeWithColor:[SKColor redColor] size:CGSizeMake(rightBrickWidth,BLOCK_HEIGHT)];
+    SKSpriteNode * rightBrick = [SKSpriteNode spriteNodeWithColor:[SKColor redColor] size:CGSizeMake(rightBrickWidth,BLOCK_HEIGHT)];
     rightBrick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(rightBrickWidth,BLOCK_HEIGHT)];
     [self addChild:rightBrick];
     rightBrick.physicsBody.categoryBitMask = obstacleCategory;
