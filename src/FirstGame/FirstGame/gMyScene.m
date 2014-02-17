@@ -250,15 +250,17 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
         
     NSInteger leftBrickWidth = whiteSpaceOffset*BLOCK_HEIGHT;
     NSInteger rightBrickWidth = (numBrickNeeded - (whiteSpaceOffset + whiteSpace))*BLOCK_HEIGHT;
-    
+
     if (leftBrickWidth < BLOCK_HEIGHT) {
         leftBrickWidth = BLOCK_HEIGHT;
     }
     if (rightBrickWidth < BLOCK_HEIGHT) {
         rightBrickWidth = BLOCK_HEIGHT;
     }
-    
+
     SKSpriteNode * brick = [SKSpriteNode spriteNodeWithColor:primary size:CGSizeMake(leftBrickWidth,BLOCK_HEIGHT)];
+
+    brick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(leftBrickWidth,BLOCK_HEIGHT)];
     [self addChild:brick];
     
     
@@ -273,8 +275,11 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
     brick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(leftBrickWidth,BLOCK_HEIGHT)];
     //brick.physicsBody.usesPreciseCollisionDetection = YES;
     
-    
+
     SKSpriteNode * rightBrick = [SKSpriteNode spriteNodeWithColor:primary size:CGSizeMake(rightBrickWidth,BLOCK_HEIGHT)];
+
+    rightBrick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(rightBrickWidth,BLOCK_HEIGHT)];
+
     [self addChild:rightBrick];
     
     
