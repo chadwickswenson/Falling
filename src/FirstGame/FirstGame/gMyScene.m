@@ -14,6 +14,7 @@ static const uint32_t obstacleCategory =  0x1 << 1;
 static const float BG_VELOCITY = 150.0; //Velocity with which our background is going to move
 static const float BLOCK_HEIGHT = 15.0;
 static const float SIDE_SPEED = 4.0;
+static const float BRICK_OVERFLOW = 20.0;
 
 static inline CGPoint CGPointAdd(const CGPoint a, const CGPoint b)
 {
@@ -119,7 +120,7 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
     ship.zRotation = - M_PI / 2;
     
     //Adding SpriteKit physicsBody for collision detection
-    ship.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:ship.size];
+    ship.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(20.0,20.0)];
     ship.physicsBody.categoryBitMask = shipCategory;
     ship.physicsBody.dynamic = YES;
     ship.physicsBody.contactTestBitMask = obstacleCategory;
@@ -211,6 +212,7 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
     UIColor * primary;
     UIColor * bg;
     NSInteger brickColorRandom = arc4random()%5;
+    
     if(1 == 1){
         primary = colorGreen;
         bg = colorGreenBg;
@@ -271,7 +273,7 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
     brick.physicsBody.contactTestBitMask = obstacleCategory;
     brick.physicsBody.collisionBitMask = 0;
     brick.name = @"brick";
-    brick.position = CGPointMake(leftBrickWidth/2,-BLOCK_HEIGHT);
+    brick.position = CGPointMake(leftBrickWidth/2 - BRICK_OVERFLOW,-BLOCK_HEIGHT);
     brick.zPosition = 3;
     brick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(leftBrickWidth,BLOCK_HEIGHT)];
     //brick.physicsBody.usesPreciseCollisionDetection = YES;
@@ -279,7 +281,7 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
 
     SKSpriteNode * rightBrick = [SKSpriteNode spriteNodeWithColor:primary size:CGSizeMake(rightBrickWidth,BLOCK_HEIGHT)];
 
-    rightBrick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(rightBrickWidth,BLOCK_HEIGHT)];
+    rightBrick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(rightBrickWidth + BRICK_OVERFLOW,BLOCK_HEIGHT)];
 
     [self addChild:rightBrick];
     
@@ -289,11 +291,10 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
     rightBrick.physicsBody.contactTestBitMask = obstacleCategory;
     rightBrick.physicsBody.collisionBitMask = 0;
     rightBrick.name = @"brick";
-    rightBrick.position = CGPointMake(screenWidth - rightBrickWidth/2,-BLOCK_HEIGHT);
+    rightBrick.position = CGPointMake(screenWidth - rightBrickWidth/2 + BRICK_OVERFLOW,-BLOCK_HEIGHT);
     rightBrick.zPosition = 3;
-    rightBrick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(rightBrickWidth,BLOCK_HEIGHT)];
+    rightBrick.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(rightBrickWidth + BRICK_OVERFLOW,BLOCK_HEIGHT)];
     //brick.physicsBody.usesPreciseCollisionDetection = YES;
-    
     
 }
 
@@ -352,8 +353,8 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
     newX = MIN(MAX(newX+ship.position.x,minY),maxY);
     newY = MIN(MAX(newY+ship.position.y,minX),maxX);
     
-    float dz = 0.1;
-    float c = 0.02;
+    float dz = 0.08;
+    float c = 0.05;
     
     if(currentMaxAccelX < dz && currentMaxAccelX > -dz){
         if(ship.zRotation < -1.5){
@@ -364,19 +365,19 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
         }
     }
     else if(currentMaxAccelX > dz && ship.zRotation < 0){
-        ship.zRotation = ship.zRotation + 0.2 * currentMaxAccelX;
+        ship.zRotation = ship.zRotation + 0.08 * currentMaxAccelX;
     }
     else if(currentMaxAccelX < -dz && ship.zRotation > -3){
-        ship.zRotation = ship.zRotation + (0.2 * currentMaxAccelX);
+        ship.zRotation = ship.zRotation + (0.08 * currentMaxAccelX);
     }
     
     float speedX = 0;
     
     if(ship.zRotation < -1.5){
-        speedX = ((ship.zRotation+1.5)/3) * SIDE_SPEED;
+        speedX = ((ship.zRotation+1.5)/4) * SIDE_SPEED;
     }
     else{
-        speedX = ((ship.zRotation+1.5)/1.5) * SIDE_SPEED;
+        speedX = ((ship.zRotation+1.5)/2) * SIDE_SPEED;
     }
     //NSLog(@"%f",speedX);
     
