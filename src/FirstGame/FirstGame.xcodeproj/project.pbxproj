@@ -12,9 +12,7 @@
 		E001DBCC18AB3B96009CC35B /* monkey.png in Resources */ = {isa = PBXBuildFile; fileRef = E001DBCB18AB3B96009CC35B /* monkey.png */; };
 		E001DBCE18AB3C60009CC35B /* dark.png in Resources */ = {isa = PBXBuildFile; fileRef = E001DBCD18AB3C60009CC35B /* dark.png */; };
 		E001DBD018AB525D009CC35B /* redbg.png in Resources */ = {isa = PBXBuildFile; fileRef = E001DBCF18AB525D009CC35B /* redbg.png */; };
-		E015A8D118B1B07600C9B10F /* monkey2.png in Resources */ = {isa = PBXBuildFile; fileRef = E015A8D018B1B07600C9B10F /* monkey2.png */; };
-		E015A8D318B1B18800C9B10F /* monkey3.png in Resources */ = {isa = PBXBuildFile; fileRef = E015A8D218B1B18800C9B10F /* monkey3.png */; };
-		E015A8D518B1B20500C9B10F /* monkey4.png in Resources */ = {isa = PBXBuildFile; fileRef = E015A8D418B1B20500C9B10F /* monkey4.png */; };
+		E015A8D718B1B96A00C9B10F /* monkey6.png in Resources */ = {isa = PBXBuildFile; fileRef = E015A8D618B1B96A00C9B10F /* monkey6.png */; };
 		E0EB65D018AACE60000C2C06 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0EB65CF18AACE60000C2C06 /* Foundation.framework */; };
 		E0EB65D218AACE60000C2C06 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0EB65D118AACE60000C2C06 /* CoreGraphics.framework */; };
 		E0EB65D418AACE60000C2C06 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0EB65D318AACE60000C2C06 /* UIKit.framework */; };
@@ -50,9 +48,7 @@
 		E001DBCB18AB3B96009CC35B /* monkey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = monkey.png; sourceTree = "<group>"; };
 		E001DBCD18AB3C60009CC35B /* dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dark.png; sourceTree = "<group>"; };
 		E001DBCF18AB525D009CC35B /* redbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redbg.png; sourceTree = "<group>"; };
-		E015A8D018B1B07600C9B10F /* monkey2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = monkey2.png; sourceTree = "<group>"; };
-		E015A8D218B1B18800C9B10F /* monkey3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = monkey3.png; sourceTree = "<group>"; };
-		E015A8D418B1B20500C9B10F /* monkey4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = monkey4.png; sourceTree = "<group>"; };
+		E015A8D618B1B96A00C9B10F /* monkey6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = monkey6.png; sourceTree = "<group>"; };
 		E0EB65CC18AACE60000C2C06 /* FirstGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FirstGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0EB65CF18AACE60000C2C06 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		E0EB65D118AACE60000C2C06 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -125,9 +121,7 @@
 		E001DBC618AB2B93009CC35B /* assets */ = {
 			isa = PBXGroup;
 			children = (
-				E015A8D418B1B20500C9B10F /* monkey4.png */,
-				E015A8D218B1B18800C9B10F /* monkey3.png */,
-				E015A8D018B1B07600C9B10F /* monkey2.png */,
+				E015A8D618B1B96A00C9B10F /* monkey6.png */,
 				E001DBCB18AB3B96009CC35B /* monkey.png */,
 				E001DBC918AB2C16009CC35B /* red-missile.png */,
 			);
@@ -291,16 +285,14 @@
 			files = (
 				E001DBCC18AB3B96009CC35B /* monkey.png in Resources */,
 				E001DBD018AB525D009CC35B /* redbg.png in Resources */,
-				E015A8D318B1B18800C9B10F /* monkey3.png in Resources */,
 				E001DBCA18AB2C16009CC35B /* red-missile.png in Resources */,
-				E015A8D118B1B07600C9B10F /* monkey2.png in Resources */,
 				E001DBC818AB2BA0009CC35B /* bg.png in Resources */,
 				E0EB65DC18AACE60000C2C06 /* InfoPlist.strings in Resources */,
 				E0EB65EF18AACE60000C2C06 /* Images.xcassets in Resources */,
 				E001DBCE18AB3C60009CC35B /* dark.png in Resources */,
-				E015A8D518B1B20500C9B10F /* monkey4.png in Resources */,
 				E0EB65ED18AACE60000C2C06 /* Spaceship.png in Resources */,
 				E0EB65E518AACE60000C2C06 /* Main.storyboard in Resources */,
+				E015A8D718B1B96A00C9B10F /* monkey6.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

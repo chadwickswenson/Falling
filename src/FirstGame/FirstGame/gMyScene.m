@@ -89,6 +89,7 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
     colorGreen = [UIColor colorWithRed:39.0f/255.0f green:197.0f/255.0f blue:165.0f/255.0f alpha:1.0f];
     colorDarkGreen = [UIColor colorWithRed:33.0f/255.0f green:168.0f/255.0f blue:140.0f/255.0f alpha:1.0f];
     colorGreenBg = [UIColor colorWithRed:184.0f/255.0f green:223.0f/255.0f blue:215.0f/255.0f alpha:1.0f];
+    
     [self addBrickRow];
     [self addChild:labelScore];
     
@@ -113,7 +114,7 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
 {
     //initalizing spaceship node
     ship = [SKSpriteNode new];
-    ship = [SKSpriteNode spriteNodeWithImageNamed:@"monkey4"];
+    ship = [SKSpriteNode spriteNodeWithImageNamed:@"monkey6"];
     [ship setScale:0.2];
     ship.zRotation = - M_PI / 2;
     
@@ -363,10 +364,10 @@ static inline CGPoint CGPointMultiplyScalar(const CGPoint a, const CGFloat b)
         }
     }
     else if(currentMaxAccelX > dz && ship.zRotation < 0){
-        ship.zRotation = ship.zRotation + 0.1 * currentMaxAccelX;
+        ship.zRotation = ship.zRotation + 0.2 * currentMaxAccelX;
     }
     else if(currentMaxAccelX < -dz && ship.zRotation > -3){
-        ship.zRotation = ship.zRotation + (0.1 * currentMaxAccelX);
+        ship.zRotation = ship.zRotation + (0.2 * currentMaxAccelX);
     }
     
     float speedX = 0;
